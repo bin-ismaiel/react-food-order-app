@@ -1,11 +1,11 @@
 import Button from "../UI/Button";
 
 import { useContext } from "react";
-import AppContext from "../../context/app-context";
-export default function CartItem({ name, count, price }) {
-  const ctx = useContext(AppContext);
+import CartContext from "../../context/cart-context";
+export default function CartItem({ name, count, price, item }) {
+  const ctx = useContext(CartContext);
   return (
-    <div>
+    <>
       <div>
         <p>{name}</p>
         <p>
@@ -15,21 +15,25 @@ export default function CartItem({ name, count, price }) {
       </div>
       <div>
         <Button
-          onClick={() => {
-            ctx.increment(name);
+          button={{
+            onClick: () => {
+              ctx.addToCart(item, 1);
+            },
           }}
         >
           +
         </Button>
         <Button
-          onClick={() => {
-            ctx.decrement(name);
+          button={{
+            onClick: () => {
+              ctx.removeFromCart(item);
+            },
           }}
         >
           -
         </Button>
       </div>
       <hr />
-    </div>
+    </>
   );
 }

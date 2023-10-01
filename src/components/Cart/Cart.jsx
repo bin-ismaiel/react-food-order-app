@@ -2,41 +2,52 @@ import { useContext } from "react";
 import Button from "../UI/Button";
 import Modal from "../UI/Modal";
 import CartItem from "./CartItem";
-import AppContext from "../../context/app-context";
+import CartContext from "../../context/cart-context";
 
 export default function Cart(props) {
-  const ctx = useContext(AppContext);
+  const cartCtx = useContext(CartContext);
   return (
     <Modal>
-      {props.items.map((item) => {
-        return (
-          <CartItem
-            name={item.name}
-            count={item.count}
-            price={item.price}
-            key={item.id}
-          />
-        );
-      })}
+      <ul>
+        {" "}
+        {cartCtx.cart.map((item) => {
+          return (
+            <li key={item.id}>
+              <CartItem
+                name={item.name}
+                count={item.count}
+                price={item.price}
+                item={item}
+              />
+            </li>
+          );
+        })}
+      </ul>
       <div>
         <p>Total Amount:</p>
-        <p>{ctx.totalAmount}</p>
+        <p>{`$${cartCtx.totalAmount.toFixed(2)}`}</p>
       </div>
       <div>
         <Button
-          onClick={() => {
-            props.close();
+          button={{
+            onClick: () => {
+              props.close();
+            },
           }}
         >
           Close
         </Button>
-        <Button
-          onClick={() => {
-            console.log("Ordering....");
-          }}
-        >
-          Order
-        </Button>
+        {cartCtx.cart.length > 0 && (
+          <Button
+            button={{
+              onClick: () => {
+                console.log("Ordering....");
+              },
+            }}
+          >
+            Order
+          </Button>
+        )}
       </div>
     </Modal>
   );

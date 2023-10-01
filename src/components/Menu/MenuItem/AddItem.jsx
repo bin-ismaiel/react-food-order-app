@@ -1,35 +1,38 @@
 import { useContext, useState } from "react";
 import Button from "../../UI/Button";
-import AppContext from "../../../context/app-context";
+import CartContext from "../../../context/cart-context";
 
 export default function AddItem(props) {
-  const [numOfItems, setNumOfItems] = useState(1);
-  const onChangeNumofItemsHandler = (e) => {
-    setNumOfItems(e.target.value);
+  const [amount, setAmount] = useState(1);
+  const onChangeAmountHandler = (e) => {
+    setAmount(e.target.value);
   };
-  const ctx = useContext(AppContext);
+  const cartCtx = useContext(CartContext);
   const addItem = () => {
-    ctx.addToCart({
-      id: Math.random(),
-      name: props.name,
-      count: numOfItems,
-      price: props.price,
-    });
+    cartCtx.addToCart(
+      {
+        id: props.id,
+        name: props.name,
+        count: amount,
+        price: props.price,
+      },
+      +amount
+    );
   };
   const submitHandler = (e) => {
     e.preventDefault();
   };
   return (
     <form onSubmit={submitHandler}>
-      <label htmlFor="number">Amount</label>
+      <label htmlFor={`amount_${props.id}`}>Amount</label>
       <input
         type="number"
-        id="number"
-        value={numOfItems}
+        id={`amount_${props.id}`}
+        value={amount}
         min={1}
-        onChange={onChangeNumofItemsHandler}
+        onChange={onChangeAmountHandler}
       />
-      <Button onClick={addItem}>Add+</Button>
+      <Button button={{ onClick: addItem }}>Add +</Button>
     </form>
   );
 }

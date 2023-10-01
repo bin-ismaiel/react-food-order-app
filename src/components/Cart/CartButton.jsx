@@ -1,13 +1,22 @@
 import Button from "../UI/Button";
 import { useContext } from "react";
-import AppContext from "../../context/app-context";
+import CartContext from "../../context/cart-context";
+import CartIcon from "./CartIcon";
 export default function CartButton(props) {
-  const ctx = useContext(AppContext);
+  const ctx = useContext(CartContext);
+  const numOfItems = ctx.cart.reduce((curr, item) => {
+    return curr + +item.count;
+  }, 0);
   return (
-    <Button onClick={() => props.open()}>
-      <img alt="cart-logo" />
+    <Button
+      button={{
+        onClick: () => props.open(),
+        style: { display: "flex", gap: "5px" },
+      }}
+    >
+      <CartIcon />
       Your Cart
-      <span>{ctx.totalItems}</span>
+      <span>{numOfItems}</span>
     </Button>
   );
 }

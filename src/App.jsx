@@ -1,9 +1,7 @@
-import { useContext, useState } from "react";
-import Cart from "./Cart/Cart";
-import Header from "./Header/Header";
-import Menu from "./Menu/Menu";
-import Summary from "./Summary";
-import AppContext from "../context/app-context";
+import { useState } from "react";
+import Cart from "./components/Cart/Cart";
+import Header from "./components/Header/Header";
+import Menu from "./components/Menu/Menu";
 const MENU = [
   { id: 1, name: "Sushi", desc: "Finest fish and veggies", price: 22.99 },
   { id: 2, name: "Schnitzel", desc: "A german specialty!", price: 16.5 },
@@ -17,7 +15,6 @@ const MENU = [
 ];
 export default function App() {
   const [showCart, setShowCart] = useState(false);
-  const ctx = useContext(AppContext);
   const openCart = () => {
     setShowCart(true);
   };
@@ -26,10 +23,8 @@ export default function App() {
   };
   return (
     <>
-      {showCart && <Cart items={ctx.cart} close={closeCart} />}
+      {showCart && <Cart close={closeCart} />}
       <Header open={openCart} />
-      <Summary />
-
       <Menu items={MENU} />
     </>
   );
